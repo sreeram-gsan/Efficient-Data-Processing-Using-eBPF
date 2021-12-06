@@ -1,0 +1,32 @@
+# Download base image ubuntu 20.04
+FROM ubuntu:21.04
+
+# Disable Prompt During Packages Installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Update Ubuntu Software repository
+RUN  su && apt-get update \
+  && apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt update \ 
+  && apt install sudo -y
+
+RUN sudo apt update
+RUN sudo apt install python3 -y
+RUN sudo apt-get install netcat -y
+RUN sudo apt install clang llvm libelf-dev libpcap-dev gcc-multilib build-essential -y
+RUN sudo apt install linux-tools-$(uname -r) -y
+RUN sudo apt install linux-tools-common linux-tools-generic -y
+RUN sudo apt-get install bpfcc-tools linux-headers-$(uname -r) -y
+RUN sudo apt install iproute2 -y
+RUN sudo apt install vim -y
+##
+#RUN sudo mount -t debugfs debugfs /sys/kernel/debug
+#RUN ulimit -l 10240
+
+# Working Directory
+RUN cd && mkdir -p "Datacentre/ws" && cd "Datacentre/ws"
+COPY eBPF eBPF
+RUN cd eBPF
+
