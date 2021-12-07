@@ -1,0 +1,10 @@
+FROM python:3.6-slim
+RUN pip install flask pika redis jsonpickle
+
+WORKDIR /
+
+RUN     mkdir   /app
+COPY    server.py  /app
+RUN echo "docker image for rest"
+EXPOSE  5023
+CMD python app/server.py

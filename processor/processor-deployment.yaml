@@ -1,0 +1,34 @@
+apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: project-processor
+spec:
+  selector:
+    matchLabels:
+      app: project-processor
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: project-processor
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: project-processor:latest
+        imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+        ports:
+        - containerPort: 9090
+        env:
+        - name: RABBITMQ_HOST
+          value: rabbitmq
+        - name: EXTRACTOR_HOST
+          value: extractor-service
+---
