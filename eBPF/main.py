@@ -28,8 +28,6 @@ except KeyboardInterrupt:
 
   row_count = counter_map[0].value
 
-  print(row_count)
-
   for i in range(row_count):
     ##print(bytes(records_map[i].record).decode('ascii'))
     a = bytes(records_map[i].record).split(b'\n')[0].decode("ascii")

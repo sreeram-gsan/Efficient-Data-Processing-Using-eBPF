@@ -50,8 +50,8 @@ int udpstringContainsFilter(struct xdp_md *ctx) {
     }
 
     if (ip->protocol != IPPROTO_UDP){
-        bpf_trace_printk("Not a UDP packet\n");
-        return XDP_DROP;
+        //bpf_trace_printk("Not a UDP packet\n");
+        return XDP_PASS;
     }
     
     udp = (void *)ip + sizeof(*ip);
