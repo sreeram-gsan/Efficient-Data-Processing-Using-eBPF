@@ -21,12 +21,14 @@ RUN sudo apt install linux-tools-common linux-tools-generic -y
 RUN sudo apt-get install bpfcc-tools linux-headers-$(uname -r) -y
 RUN sudo apt install iproute2 -y
 RUN sudo apt install vim -y
+RUN sudo apt-get -y install python3-pip
+RUN sudo pip3 install flask
+RUN sudo apt-get install curl -y
 ##
 #RUN sudo mount -t debugfs debugfs /sys/kernel/debug
 #RUN ulimit -l 10240
 
-# Working Directory
-RUN cd && mkdir -p "Datacentre/ws" && cd "Datacentre/ws"
+WORKDIR /
+EXPOSE 5000
 COPY eBPF eBPF
-RUN cd eBPF
-
+CMD ["/bin/bash", "eBPF/startup.sh"]
