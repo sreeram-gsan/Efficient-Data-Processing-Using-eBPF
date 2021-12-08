@@ -26,7 +26,4 @@ spec:
             memory: 500Mi
         ports:
         - containerPort: 5024
-        env:
-        - name: RABBITMQ_HOST
-          value: rabbitmq
 ---

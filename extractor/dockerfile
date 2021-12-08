@@ -1,10 +1,11 @@
 FROM python:3.6-slim
-RUN pip install flask pika redis jsonpickle
+RUN pip install flask
 
 WORKDIR /
 
-RUN     mkdir   /app
-COPY    extractor.py  /app
-RUN echo "docker image for rest"
+RUN mkdir /app
+COPY extractor.py /app
+COPY data.txt /app
+RUN echo "docker image for extractor"
 EXPOSE  5024
 CMD python app/extractor.py
