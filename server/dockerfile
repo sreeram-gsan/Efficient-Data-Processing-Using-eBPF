@@ -4,7 +4,11 @@ RUN pip install flask pika redis jsonpickle
 WORKDIR /
 
 RUN     mkdir   /app
+RUN     mkdir   /app/util 
+#CMD     ["/bin/ls","-l"]
 COPY    server.py  /app
+ADD     /util/publish_logs.py /app/util
+
 RUN echo "docker image for rest"
 EXPOSE  5023
 CMD python app/server.py

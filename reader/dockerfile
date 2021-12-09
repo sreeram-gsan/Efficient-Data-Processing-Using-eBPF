@@ -6,13 +6,10 @@ WORKDIR /
 RUN     mkdir   /app
 RUN     mkdir /app/util
 
-COPY    processor.py  /app
-COPY    packet_reader.py /app
-
-RUN pwd
+COPY    queue_reader.py /app
 
 COPY    /util/publish_logs.py /app/util
 
-RUN echo "docker image for processor"
+RUN echo "docker image for reader"
 EXPOSE 5025
-CMD python app/processor.py
+CMD python app/queue_reader.py

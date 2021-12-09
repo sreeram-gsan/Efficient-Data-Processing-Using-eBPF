@@ -4,6 +4,9 @@ import pika
 import jsonpickle
 import os
 
+from pika.spec import Queue
+import util.publish_logs as pl
+
 '''
 server.py
 
@@ -27,6 +30,7 @@ def analyze():
     r = request
     body = request.get_json(force=True)
     filter, source = body['filter'],body['source']
+    pl.log_debug(f"filter :{filter} source_file:{source}")
     print(f"filter :{filter} source_file:{source}")
     
     #create channel in rabbitmq

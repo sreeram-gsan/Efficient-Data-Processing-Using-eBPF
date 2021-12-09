@@ -7,6 +7,7 @@ docker_build:
 	docker build -f extractor/dockerfile -t project-extractor extractor/.
 	docker build -f processor/dockerfile -t project-processor processor/.
 	docker build -f logs/dockerfile -t project-logs logs/.
+	docker build -f reader/dockerfile -t project-reader reader/.
 	docker pull rabbitmq
 #deploy the whole setup into kubernetes local 
 #to check which k8s cluster you are using; command: kubectl config view 
@@ -23,6 +24,9 @@ kube_deploy:
 	kubectl apply -f rabbitmq/rabbitmq-service.yaml
 
 	kubectl apply -f processor/processor-deployment.yaml
+	kubectl apply -f processor/processor-service.yaml
+
+	kubectl apply -f reader/reader-deployment.yaml
 
 	kubectl apply -f logs/logs-deployment.yaml
 
@@ -40,6 +44,7 @@ docker_clean:
 	docker rmi project-server
 	docker rmi project-extractor
 	docker rmi project-logs
+	docker rmi project-reader
 
 #clear docker cache; images are created a new than the from the previous build
 docker_clear_cache:
@@ -60,3 +65,7 @@ build:
 #run integration tests
 test:
 	python3 test/run_test.py
+
+clean:
+	make kube_delete
+	make docker_deep_clean

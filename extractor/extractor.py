@@ -4,7 +4,7 @@ import socket
 import os
 import requests
 import time
-
+import util.publish_logs as pl
 '''
 extractor.py
 
@@ -32,7 +32,7 @@ def extract():
     r = request
     body = request.get_json(force=True)
     filter, source = body['filter'],body['source']
-    
+    pl.log_debug(f"recieved the data: {filter} : {source}")
     #reading data from file
     with open(source) as f:
         contents = f.readlines()
@@ -71,5 +71,7 @@ def extract():
 
     return Response(response={"status":"success"}, status=200, mimetype="application/json")
 
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5023)
+    app.run(host="localhost", port=5024)
+
