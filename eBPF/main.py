@@ -10,7 +10,8 @@ import os
 os.system("ulimit -l 10240")
 os.system("sudo mount -t debugfs debugfs /sys/kernel/debug")
 
-ethernet_interface = "lo"
+##ethernet_interface = "lo"
+ethernet_interface = "eth0"
 sys.stdout = open("log.txt", 'w')
 
 bpf_obj = BPF(src_file="stringContainsFilter.c")

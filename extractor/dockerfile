@@ -1,5 +1,24 @@
-FROM python:3.6-slim
-RUN pip install flask
+# Download base image ubuntu 20.04
+FROM ubuntu:21.04
+
+# Disable Prompt During Packages Installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Update Ubuntu Software repository
+RUN  su && apt-get update \
+  && apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt update \ 
+  && apt install sudo -y
+
+RUN sudo apt update
+RUN sudo apt install python3 -y
+RUN sudo apt-get install netcat -y
+RUN sudo apt install iproute2 -y
+RUN sudo apt-get -y install python3-pip
+RUN sudo pip3 install flask
+RUN sudo pip3 install requests
 
 WORKDIR /
 
@@ -8,4 +27,4 @@ COPY extractor.py /app
 COPY data.txt /app
 RUN echo "docker image for extractor"
 EXPOSE  5024
-CMD python app/extractor.py
+CMD python3 app/extractor.py

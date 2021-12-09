@@ -4,12 +4,14 @@ import os
 import subprocess
 import multiprocessing
 import signal
+import fileinput
   
 # creating a Flask app
 app = Flask(__name__)
 process_id = None
 process_obj = None
-  
+eBPF_source_code = "eBPF/stringContainsFilter.c"
+
 # on the terminal type: curl http://127.0.0.1:5000/
 # returns hello world when we use GET.
 # returns the data that we send when we use POST.
@@ -18,16 +20,30 @@ def end():
     if(request.method == 'GET'):
         return jsonify({'data': killProcess()})
 
-@app.route('/start', methods = ['GET', 'POST'])
-def start():
+@app.route('/start//<filter>', methods = ['GET', 'POST'])
+def start(filter):
     if(request.method == 'GET'):
-        data = startBPF()
+        data = startBPF(filter)
         if(data):
             return jsonify({'data': data})
 
-def startBPF():
+def startBPF(filter):
     global process_obj
     global process_id
+
+    filedata = ""
+
+    with open(eBPF_source_code, 'r') as file :
+        for line in file:
+            if ('char pattern[] = "' in line):
+                filedata = filedata + 'char pattern[] = "'+ filter +'";' + "\n"
+            else:
+                filedata = filedata + line
+
+    # Write the file out again
+    with open(eBPF_source_code, 'w') as file:
+        file.write(filedata)
+
     try :
         process_obj = multiprocessing.Process(target=targetF ,args=())
         process_obj.start()
@@ -55,4 +71,4 @@ def targetF():
   
 # driver function
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host="0.0.0.0", port=5000)
