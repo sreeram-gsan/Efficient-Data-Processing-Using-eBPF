@@ -24,7 +24,7 @@ log.setLevel(logging.DEBUG)
 MAX_ROWS_TO_PROCESS = 900
 EBPF_HOST = os.getenv("EBPF_HOST") or "172.17.0.2"
 EBPF_PORT = 7888
-EBPF_REST_PORT = "5000"
+EBPF_REST_PORT = "80"
 
 @app.route('/api/v1/extract', methods=['POST'])
 def extract():
@@ -32,7 +32,7 @@ def extract():
     r = request
     body = request.get_json(force=True)
     filter, source = body['filter'],body['source']
-    pl.log_debug(f"recieved the data: {filter} : {source}")
+    #pl.log_debug(f"recieved the data: {filter} : {source}")
     #reading data from file
     with open(source) as f:
         contents = f.readlines()
@@ -73,5 +73,4 @@ def extract():
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=5024)
-
+    app.run(host="0.0.0.0", port=5024)

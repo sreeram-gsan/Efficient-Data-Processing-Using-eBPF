@@ -1,0 +1,31 @@
+apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ebpf-server
+spec:
+  selector:
+    matchLabels:
+      app: ebpf-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ebpf-server
+    spec:
+      containers:
+      - name: ebpf-container
+        image: ebpf-server:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          privileged: true
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: RABBITMQ_HOST
+          value: rabbitmq

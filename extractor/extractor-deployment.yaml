@@ -17,7 +17,7 @@ spec:
         tier: backend
     spec:
       containers:
-      - name: master
+      - name: project-extractor-container
         image: project-extractor:latest
         imagePullPolicy: Never
         resources:
@@ -26,4 +26,11 @@ spec:
             memory: 500Mi
         ports:
         - containerPort: 5024
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: RABBITMQ_HOST
+          value: rabbitmq
+        - name: EBPF_HOST
+          value: ebpf-server
 ---

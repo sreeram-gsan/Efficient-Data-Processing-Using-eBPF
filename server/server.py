@@ -6,6 +6,7 @@ import os
 
 from pika.spec import Queue
 import util.publish_logs as pl
+import redis
 
 '''
 server.py
@@ -24,6 +25,8 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.DEBUG)
 rabbitMQHost = os.getenv("RABBITMQ_HOST") or "localhost"
+redisHost = "redis"
+db = redis.Redis(host=redisHost, db=1)
 
 @app.route('/api/v1/filter', methods=['POST'])
 def analyze():
@@ -44,6 +47,14 @@ def analyze():
     channel.close()
     connection.close()
     response_pickled = jsonpickle.encode({"action":"filter queued"})
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+@app.route('/api/v1/data/', methods = ['GET'])
+def getCacheEntries():
+    result = {}
+    for key in db.keys():
+        result[key] = db.get(key).decode("utf-8")
+    response_pickled = jsonpickle.encode(result)
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 if __name__ == "__main__":

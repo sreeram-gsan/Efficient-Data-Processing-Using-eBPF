@@ -30,5 +30,5 @@ spec:
         - name: RABBITMQ_HOST
           value: rabbitmq
         - name: EXTRACTOR_HOST
-          value: extractor-service
+          value: project-extractor
 ---

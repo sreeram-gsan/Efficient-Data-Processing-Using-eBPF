@@ -31,7 +31,7 @@ def callback(ch, method, properties, body):
 
     headers = {'content-type': 'application/json'}
     extractorHost  = os.getenv("EXTRACTOR_HOST") or "localhost"
-    addr = f"http://{extractorHost}"
+    addr = f"http://{extractorHost}:7777"
     add_url = addr + "/api/v1/extract"
     response = requests.post(add_url, json=body, headers=headers)
     pl.log_debug(addr)

@@ -4,11 +4,13 @@ VERSION=v3
 docker_build:
 	echo "docker build"
 	docker build -f server/dockerfile -t project-server  server/.
-	docker build -f extractor/dockerfile -t project-extractor extractor/.
-	docker build -f processor/dockerfile -t project-processor processor/.
 	docker build -f logs/dockerfile -t project-logs logs/.
 	docker build -f reader/dockerfile -t project-reader reader/.
 	docker pull rabbitmq
+	docker build -f eBPF/DockerFile -t ebpf-server:latest .
+	docker build -f extractor/dockerfile -t project-extractor:latest .
+	docker pull redis
+
 #deploy the whole setup into kubernetes local 
 #to check which k8s cluster you are using; command: kubectl config view 
 kube_deploy:
@@ -23,12 +25,17 @@ kube_deploy:
 	kubectl apply -f rabbitmq/rabbitmq-deployment.yaml
 	kubectl apply -f rabbitmq/rabbitmq-service.yaml
 
-	kubectl apply -f processor/processor-deployment.yaml
-	kubectl apply -f processor/processor-service.yaml
+	kubectl apply -f redis/redis-deployment.yaml
+	kubectl apply -f redis/redis-service.yaml
+
+	kubectl apply -f eBPF/eBPF-service.yaml
+	kubectl apply -f eBPF/eBPF-deployment.yaml
 
 	kubectl apply -f reader/reader-deployment.yaml
 
 	kubectl apply -f logs/logs-deployment.yaml
+
+	kubectl apply -f ingress.yaml
 
 #delete all the k8s services that are deployed by the project
 kube_delete:
@@ -43,8 +50,10 @@ docker_clean:
 	docker rmi project-processor
 	docker rmi project-server
 	docker rmi project-extractor
+	docker rmi ebpf-server
 	docker rmi project-logs
 	docker rmi project-reader
+	docker rmi redis
 
 #clear docker cache; images are created a new than the from the previous build
 docker_clear_cache:

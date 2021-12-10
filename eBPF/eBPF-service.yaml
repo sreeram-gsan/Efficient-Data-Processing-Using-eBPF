@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: "ebpf-server"
+spec:
+  type: NodePort 
+  selector:
+    app: "ebpf-server"
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 5000
+      name: rest
+    - protocol: "UDP"
+      port: 7888
+      targetPort: 7888
+      name: udp

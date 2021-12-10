@@ -1,7 +1,6 @@
 
 # Download base image ubuntu 20.04
 FROM ubuntu:21.04
-FROM python:3.6-slim
 
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
@@ -27,12 +26,13 @@ RUN sudo pip3 install pika redis jsonpickle
 WORKDIR /
 
 RUN mkdir /app
-COPY extractor.py /app
-COPY data.txt /app
+COPY extractor/extractor.py /app
+COPY extractor/data.txt /app
+
 RUN echo "docker image for extractor"
+
 RUN     mkdir   /app/util
-COPY    extractor.py  /app
-COPY    /util/publish_logs.py /app/util
+COPY    extractor/util/publish_logs.py /app/util
 
 EXPOSE  5024
 CMD python3 app/extractor.py

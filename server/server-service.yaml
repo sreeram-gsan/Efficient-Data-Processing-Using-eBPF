@@ -5,6 +5,7 @@ metadata:
   labels:
     app: project-rest-service
 spec:
+  type: NodePort 
   ports:
     - protocol: "TCP"
       port: 6666
