@@ -44,4 +44,8 @@ except KeyboardInterrupt:
   
   bpf_obj.remove_xdp(ethernet_interface, 0)
   sys.stdout.close()
-  db.mset(data_store)
+  ## clear redis
+  for key in db.keys():
+    db.delete(key)
+  if(data_store):
+    db.mset(data_store)

@@ -37,8 +37,8 @@ def callback(ch, method, properties, body):
     pl.log_debug(addr)
     # decode response
     print("Response is", response)
-    print(json.loads(response.text))
-    pl.log_debug(json.loads(response.text))
+    #print(json.loads(response.text))
+    pl.log_debug(response.text)
 
 rabbitMQChannel.basic_consume(
 queue='toProcessor', on_message_callback=callback, auto_ack=True)
