@@ -17,4 +17,4 @@ Swaminathan Sriram, Sreeram Ganesan, Gopala Krishna Vasanth Kanugo
 
 ## Architecture Diagram 
 <br></br>
-![Architecture Diagram](arch.png)
+![Architecture Diagram](architecture.png)
